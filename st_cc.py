@@ -251,8 +251,11 @@ class CCAutoComplete(sublime_plugin.EventListener):
 
   def on_modified(self, view):
     self.dirty = True
-    if can_complete(view) and Complete.is_member_completion(view):
-      self.per_complete()
+    # print(view.name())
+    # print(view.name().find('Outline'))
+    if not view.name().find('Outline') > -1:
+      if can_complete(view) and Complete.is_member_completion(view):
+        self.per_complete()
 
 
   def per_complete(self):
@@ -268,7 +271,7 @@ class CCAutoComplete(sublime_plugin.EventListener):
 
   def on_post_save_async(self, view):
     if not can_complete(view):
-      return 
+      return
 
     settings = Complete.get_settings()
     hide_error_panel = settings.get('hide_error_panel') or False
@@ -279,7 +282,7 @@ class CCAutoComplete(sublime_plugin.EventListener):
       sym.reparse()
     self.dirty = False
     digst = sym.diagnostic()
-    
+
     output = "\n".join([err for _, (_, _, _, _, err) in digst])
     clang_error_panel.set_data(output)
     clang_error_panel.error_marks(view, digst, not hide_error_mark)
@@ -290,7 +293,7 @@ class CCAutoComplete(sublime_plugin.EventListener):
     if not window is None and len(digst) >= 1:
       window.run_command("clang_toggle_panel", {"show": not hide_error_panel})
 
-  
+
   def on_query_completions(self, view, prefix, locations):
     line, col = view.rowcol(locations[0])
     line += 1
@@ -330,7 +333,7 @@ class CCAutoComplete(sublime_plugin.EventListener):
       self.t.start()
       if prefix == "":
         return ([], flag)
-      else:  
+      else:
         return None
 
     else:
