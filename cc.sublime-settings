@@ -51,6 +51,7 @@
         "-Wno-incompatible-pointer-types-discards-qualifiers",
         "-Wno-unsequenced",
         "-Wno-main-return-type",
+        "-Wno-macro-redefined",
         "-D_CRT_SECURE_NO_WARNINGS"
     ],
 
