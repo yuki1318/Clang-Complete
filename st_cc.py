@@ -91,7 +91,7 @@ class WraperComplete(object):
         holder_idx += 1
       elif kind == CXCompletionChunkKind.Informative:
         value = ""
-      elif kind== CXCompletionChunkKind.ResultType:
+      elif kind == CXCompletionChunkKind.ResultType:
         value = ""
         delc_value = ""
       contents += value
@@ -175,7 +175,6 @@ class Complete(object):
 
     for v in include_opts:
       opt.append(v)
-    print("clang options: ", opt)
     return opt
 
   @staticmethod
@@ -238,7 +237,6 @@ class ClangGotoDef(sublime_plugin.TextCommand):
     sym = Complete.get_symbol(filename, self.view)
     location = sym.get_def(filename, row+1, col+1)
     if location.has :
-      # print(location.target)
       self.view.window().open_file(location.target, sublime.ENCODED_POSITION)
     else:
       sublime.status_message("Cant find definition")
@@ -251,8 +249,6 @@ class CCAutoComplete(sublime_plugin.EventListener):
 
   def on_modified(self, view):
     self.dirty = True
-    # print(view.name())
-    # print(view.name().find('Outline'))
     if not view.name().find('Outline') > -1:
       if can_complete(view) and Complete.is_member_completion(view):
         self.per_complete()
@@ -287,12 +283,8 @@ class CCAutoComplete(sublime_plugin.EventListener):
     clang_error_panel.set_data(output)
     clang_error_panel.error_marks(view, digst, not hide_error_mark)
 
-    if output:
-      print(output)
-    window = view.window()
-    if not window is None and len(digst) >= 1:
-      window.run_command("clang_toggle_panel", {"show": not hide_error_panel})
-
+    if not hide_error_panel:
+      view.run_command("output")
 
   def on_query_completions(self, view, prefix, locations):
     line, col = view.rowcol(locations[0])
@@ -339,3 +331,15 @@ class CCAutoComplete(sublime_plugin.EventListener):
     else:
       print("complete busy!")
       return None
+
+class OutputCommand(sublime_plugin.TextCommand):
+  def run(self,edit):
+    window = self.view.window()
+    output_view = window.get_output_panel("cc")
+    output_view.settings().set("result_file_regex", "^(..[^:\n]*):([0-9]+):?([0-9]+)?:? (.*)$")
+    output_view.set_syntax_file('Packages/Clang-Complete/ErrorPanel.tmLanguage')
+    output_view.set_read_only(False)
+    output_view.erase(edit, sublime.Region(0, output_view.size()))
+    output_view.insert(edit, output_view.size(), clang_error_panel.data)
+    window.run_command("show_panel",{"panel": "output.cc"})
+

@@ -70,7 +70,6 @@ class ClangErrorPanel(object):
         cur_filename = view.file_name()
         outlines = {'warning': [], 'error': [], 'fatal error': []}
         for i, (filename, line, col, error_type, info) in digst:
-            print(error_type, line)
             if error_type in outlines and cur_filename == filename:
                 outlines[error_type].append(view.full_line(view.text_point(line-1, 0)))
 
