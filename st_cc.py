@@ -341,5 +341,8 @@ class OutputCommand(sublime_plugin.TextCommand):
     output_view.set_read_only(False)
     output_view.erase(edit, sublime.Region(0, output_view.size()))
     output_view.insert(edit, output_view.size(), clang_error_panel.data)
-    window.run_command("show_panel",{"panel": "output.cc"})
+    if output_view.size() > 0:
+      window.run_command("show_panel",{"panel": "output.cc"})
+    else:
+      window.run_command("hide_panel",{"panel": "output.cc"})
 
