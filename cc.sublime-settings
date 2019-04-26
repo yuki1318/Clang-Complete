@@ -53,6 +53,8 @@
         "-Wno-unused-macros",
         "-Wno-main-return-type",
         "-Wno-macro-redefined",
+        "-Wno-int-to-pointer-cast",
+        "-Wno-int-to-void-pointer-cast",
         "-D_CRT_SECURE_NO_WARNINGS"
     ],
 
