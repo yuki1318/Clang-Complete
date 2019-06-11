@@ -4,7 +4,7 @@
     {
         // For example, you can use "c++": ["-std=c++11"] to enable C++11 features.
         "c++" : ["-std=c++11"],
-        "c": [],
+        "c": ["-std=c11"],
         "objc": [],
         "objc++": []
     },
