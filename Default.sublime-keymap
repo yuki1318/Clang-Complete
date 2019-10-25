@@ -1,11 +1,10 @@
 [
 	{
 		"command": "clang_goto_def",
-    "keys": ["super+y"]
+		"keys": ["super+y"]
 	},
-
-  {
-    "command": "clang_clean",
-    "keys": ["super+."]
-  }
+	{
+		"command": "clang_clean",
+		"keys": ["super+."]
+	}
 ]
