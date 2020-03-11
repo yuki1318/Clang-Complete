@@ -258,7 +258,7 @@ class CCAutoComplete(sublime_plugin.EventListener):
 
 	def on_modified(self, view):
 		self.dirty = True
-		if not view.name().find('Outline') > -1:
+		if not view.name().find('Outline') > -1 and view.file_name() != None:
 			if can_complete(view) and Complete.is_member_completion(view):
 				self.per_complete()
 
