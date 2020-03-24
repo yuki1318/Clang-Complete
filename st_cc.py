@@ -295,9 +295,19 @@ class CCAutoComplete(sublime_plugin.EventListener):
 			view.run_command("output")
 
 	def on_post_save_async(self, view):
-		if not can_complete(view):
-			return
-		self.linter(view)
+		if not view.name().find('Outline') > -1 and view.file_name() != None:
+			if can_complete(view):
+				self.linter(view)
+
+	def on_load_async(self, view):
+		if not view.name().find('Outline') > -1 and view.file_name() != None:
+			if can_complete(view):
+				self.linter(view)
+
+	def on_activated_async(self, view):
+		if not view.name().find('Outline') > -1 and view.file_name() != None:
+			if can_complete(view):
+				self.linter(view)
 
 	def on_query_completions(self, view, prefix, locations):
 		line, col = view.rowcol(locations[0])
