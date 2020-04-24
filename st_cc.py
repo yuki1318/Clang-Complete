@@ -7,7 +7,7 @@ from .clang_error import *
 from .cc import *
 
 
-language_regex = re.compile("(?<=source\.)[\w+#]+")
+language_regex = re.compile("(?<=source\\.)[\\w+#]+")
 drivers = {
 	"c++"		:	"-xc++",
 	"c"			:	"-xc",
